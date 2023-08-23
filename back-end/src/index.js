@@ -1,4 +1,17 @@
-import app from './app.js'
+import app from "./app.js";
+import { sequelize } from "./config/database.js";
 
-app.listen(4000);
-console.log('Server is listening')
+const port = process.env.PORT;
+
+async function main() {
+  try {
+    await sequelize.sync();
+    console.log("Connection has been established successfully.");
+    app.listen(port);
+    console.log("Server listening on port: ", port);
+  } catch (error) {
+    console.log("Unable to connect to the database:", error);
+  }
+}
+
+main();
