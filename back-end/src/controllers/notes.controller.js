@@ -18,7 +18,7 @@ export async function getNotes(req, res) {
 export async function getNote(req, res) {
   const { id } = req.params;
   try {
-    const note = await Note.findByPk(id);
+    const note = await Note.findByPk(id, {include: Tag});
     res.json(note);
   } catch (error) {
     res.status(500).json({
@@ -35,9 +35,9 @@ export async function createNote(req, res) {
       { fields: ["title", "content", "type"] }
     );
 
-    tags.forEach(async (tag) => {
-      newNote.addTag(tag);
-    });
+    for (const tag of tags) {
+      await newNote.addTag(tag);
+    }
 
     return res
       .status(201)

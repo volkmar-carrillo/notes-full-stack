@@ -29,3 +29,13 @@ export async function createTag(req, res) {
       });
     });
 }
+
+export async function deleteTag(req, res) {
+  const { id } = req.params;
+  try {
+    await Tag.destroy({ where: { id } });
+    return res.sendStatus(204);
+  } catch (error) {
+    return res.status(500).json({ message: error.message });
+  }
+}
